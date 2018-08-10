@@ -46,6 +46,8 @@ def Show(conn,tableName):
         print row
     conn.commit()
 
+def TransferDecodeEncode(st):
+    return st)
 
 
 def crSQL(sql, number,tableName):
@@ -71,17 +73,17 @@ def TEP_Park(infoFile,nu):
         if nu != 0:
             try:
                 subData = line.split(',')
-                serial = subData[0].decode('big5').encode('utf8').replace("\r", '').replace("\n", '')
-                categoryTfInt = subData[1].decode('big5').encode('utf8').replace("\r", '').replace("\n",'')
+                serial = TransferDecodeEncode(subData[0])
+                categoryTfInt = TransferDecodeEncode(subData[1])
                 category = int( getCategory(titleName, categoryTfInt,1 ) )
-                if subData[2].decode('big5').encode('utf8').replace("\r", '').replace("\n", '') == '':
+                if TransferDecodeEncode(subData[2]) == '':
                     price = None
                 else:
-                    price = int(subData[2].decode('big5').encode('utf8').replace("\r", '').replace("\n", ''))
-                if subData[3].decode('big5').encode('utf8').replace("\r", '').replace("\n",'') == '':  # check area is null
+                    price = int(TransferDecodeEncode(subData[2]))
+                if TransferDecodeEncode(subData[3]) == '':  # check area is null
                     area = None
                 else:
-                    area = float(subData[3].decode('big5').encode('utf8').replace("\r", '').replace("\n", ''))
+                    area = float(TransferDecodeEncode(subData[3]))
                 result = (serial, category, price, area)
                 resultList.append(result)
                 # print result
@@ -108,7 +110,7 @@ def TPE_Land(infoFile, nu):
         if nu == 0:
             title = line.split(',')
             for getTitle in title:  # get title name
-                if getTitle.decode('big5').encode('utf8').replace("\r", '').replace("\n", '') == '使用分區或編定':
+                if TransferDecodeEncode(getTitle) == '使用分區或編定':
                     stt  = unicodedata.normalize('NFKD', u'都市土地使用分區').encode('big5') # unicode transform to str
                     titleName.append(stt)
                     # print 'change name'  , getTitle.decode('big5')
@@ -117,17 +119,17 @@ def TPE_Land(infoFile, nu):
         if nu != 0:
             try:
                 subData = line.split(',')
-                serial = subData[0].decode('big5').encode('utf8').replace("\r", '').replace("\n", '')
+                serial = TransferDecodeEncode(subData[0])
                 # try:
-                position = subData[1].decode('big5').encode('utf8').replace("\r", '').replace("\n",'')
+                position = TransferDecodeEncode(subData[1])
                 # except:
                     # position = subData[1].replace("\r", '').replace("\n",'')
                 # print subData[2].decode('big5').encode('utf8').replace("\r", '').replace("\n",'')
-                if subData[2].decode('big5').encode('utf8').replace("\r", '').replace("\n",'') == '':  # check area is null
+                if TransferDecodeEncode(subData[2]) == '':  # check area is null
                     area = None
                 else:
-                    area = float(subData[2].decode('big5').encode('utf8').replace("\r", '').replace("\n", ''))
-                zoningSplit = subData[3].decode('big5').encode('utf8').replace("\r", '').replace("\n", '').split('：')[1]
+                    area = float(TransferDecodeEncode(subData[2]))
+                zoningSplit = TransferDecodeEncode(subData[3]).split('：')[1]
                 zoning = int(getCategory(titleName, zoningSplit,3))
                 list = (serial, position, area, zoning)
                 # print [number, position, area, zoning]
@@ -159,25 +161,25 @@ def TPE_Build(infoFile,nu):
         if nu != 0:
             try:
                 subData = line.split(',')
-                serial = subData[0].decode('big5').encode('utf8').replace("\r", '').replace("\n", '')
-                if subData[1].decode('big5').encode('utf8').replace("\r", '').replace("\n", '') == '':
+                serial = TransferDecodeEncode(subData[0])
+                if TransferDecodeEncode(subData[1]) == '':
                     room_age = None
                 else:
-                    room_age = int(subData[1].decode('big5').encode('utf8').replace("\r", '').replace("\n", ''))
-                if subData[2].decode('big5').encode('utf8').replace("\r", '').replace("\n", '') == '':
+                    room_age = int(TransferDecodeEncode(subData[1]))
+                if TransferDecodeEncode(subData[2]) == '':
                     buildArea = None
                 else:
-                    buildArea = float(subData[2].decode('big5').encode('utf8').replace("\r", '').replace("\n", ''))
+                    buildArea = float(TransferDecodeEncode(subData[2]))
 
-                mainUseTfInt = subData[3].decode('big5').encode('utf8').replace("\r", '').replace("\n", '')
+                mainUseTfInt = TransferDecodeEncode(subData[3])
                 mainUse = int(getCategory(titleName,mainUseTfInt,3))
 
-                mainMaterialsTfInt = subData[4].decode('big5').encode('utf8').replace("\r", '').replace("\n", '')
+                mainMaterialsTfInt = TransferDecodeEncode(subData[4])
                 mainMaterials = int(getCategory(titleName,mainMaterialsTfInt,4))
 
-                completesDate = subData[5].decode('big5').encode('utf8').replace("\r", '').replace("\n", '')
-                totalLayer = subData[6].decode('big5').encode('utf8').replace("\r", '').replace("\n", '')
-                lamination = subData[7].decode('big5').encode('utf8').replace("\r", '').replace("\n", '')
+                completesDate = TransferDecodeEncode(subData[5])
+                totalLayer = TransferDecodeEncode(subData[6])
+                lamination = TransferDecodeEncode(subData[7])
                 # print serial , room_age, buildArea ,mainUse, mainMaterials,completesDate,totalLayer,lamination
                 list = (serial , room_age, buildArea ,mainUse, mainMaterials,completesDate,totalLayer,lamination)
                 result.append(list)
@@ -211,40 +213,40 @@ def TEPMain(infoFile,nu):
             try:
                 subData = line.split(',')
 
-                districtTfInt = subData[0].decode('big5').encode('utf8').replace("\r", '').replace("\n", '')
+                districtTfInt = TransferDecodeEncode(subData[0])
                 district = int(getCategory(titleName,districtTfInt,0))
 
-                transaction = subData[1].decode('big5').encode('utf8').replace("\r", '').replace("\n", '')
-                plate = subData[2].decode('big5').encode('utf8').replace("\r", '').replace("\n", '')
-                if subData[3].decode('big5').encode('utf8').replace("\r", '').replace("\n", '') == '':
+                transaction = TransferDecodeEncode(subData[1])
+                plate = TransferDecodeEncode(subData[2])
+                if TransferDecodeEncode(subData[3]) == '':
                     squareMeter = None
                 else:
-                    squareMeter = float(subData[3].decode('big5').encode('utf8').replace("\r", '').replace("\n", ''))
+                    squareMeter = float(TransferDecodeEncode(subData[3]))
 
-                zoningTfInt = subData[4].decode('big5').encode('utf8').replace("\r", '').replace("\n", '')
+                zoningTfInt = TransferDecodeEncode(subData[4])
                 zoning = int(getCategory(titleName,zoningTfInt,4))
 
-                non_metropolis = subData[5].decode('big5').encode('utf8').replace("\r", '').replace("\n", '')
-                non_metropolis_land_use = subData[6].decode('big5').encode('utf8').replace("\r", '').replace("\n", '')
-                transaction_year = subData[7].decode('big5').encode('utf8').replace("\r", '').replace("\n", '')
-                month_and_day = subData[8].decode('big5').encode('utf8').replace("\r", '').replace("\n", '')
-                transaction_pen = subData[9].decode('big5').encode('utf8').replace("\r", '').replace("\n", '')
-                shifting_level = subData[10].decode('big5').encode('utf8').replace("\r", '').replace("\n", '')
+                non_metropolis = TransferDecodeEncode(subData[5])
+                non_metropolis_land_use = TransferDecodeEncode(subData[6])
+                transaction_year = TransferDecodeEncode(subData[7])
+                month_and_day = TransferDecodeEncode(subData[8])
+                transaction_pen = TransferDecodeEncode(subData[9])
+                shifting_level = TransferDecodeEncode(subData[10])
 
-                total_floorTfInt = subData[11].decode('big5').encode('utf8').replace("\r", '').replace("\n", '')
+                total_floorTfInt = TransferDecodeEncode(subData[11])
                 total_floot = int(getCategory(titleName,total_floorTfInt,11))
 
-                building_stateTfInt = subData[12].decode('big5').encode('utf8').replace("\r", '').replace("\n", '')
+                building_stateTfInt = TransferDecodeEncode(subData[12])
                 building_state = int(getCategory(titleName,building_stateTfInt,12))
 
-                main_useTfInt = subData[13].decode('big5').encode('utf8').replace("\r", '').replace("\n", '')
+                main_useTfInt = TransferDecodeEncode(subData[13])
                 main_use = int(getCategory(titleName,main_useTfInt,13))
                 try:
-                    main_building_materials = int(subData[14].decode('big5').encode('utf8').replace("\r", '').replace("\n", ''))
-                    construction = float(subData[15].decode('big5').encode('utf8').replace("\r", '').replace("\n", ''))
-                    building_shifting = int(subData[16].decode('big5').encode('utf8').replace("\r", '').replace("\n", ''))
-                    building_present = int(subData[17].decode('big5').encode('utf8').replace("\r", '').replace("\n", ''))
-                    building_present_hall =  int(subData[18].decode('big5').encode('utf8').replace("\r", '').replace("\n", ''))
+                    main_building_materials = int(TransferDecodeEncode(subData[14]))
+                    construction = float(TransferDecodeEncode(subData[15]))
+                    building_shifting = int(TransferDecodeEncode(subData[16]))
+                    building_present = int(TransferDecodeEncode(subData[17]))
+                    building_present_hall =  int(TransferDecodeEncode(subData[18]))
                 except:
                     main_building_materials = None
                     construction = None
@@ -252,26 +254,26 @@ def TEPMain(infoFile,nu):
                     building_present = None
                     building_present_hall = None
 
-                buildingPresent_health = subData[19].decode('big5').encode('utf8').replace("\r", '').replace("\n", '')
-                buildingPresent_hcompartmented =  subData[20].decode('big5').encode('utf8').replace("\r", '').replace("\n", '')
+                buildingPresent_health = TransferDecodeEncode(subData[19])
+                buildingPresent_hcompartmented =  TransferDecodeEncode(subData[20])
                 try:
-                    totail_money = int(subData[21].decode('big5').encode('utf8').replace("\r", '').replace("\n", ''))
-                    total_price = int(subData[22].decode('big5').encode('utf8').replace("\r", '').replace("\n", ''))
+                    totail_money = int(TransferDecodeEncode(subData[21]))
+                    total_price = int(TransferDecodeEncode(subData[22]))
                 except:
                     totail_money = None
                     total_price = None
 
-                unit_preiceTfInt = subData[23].decode('big5').encode('utf8').replace("\r", '').replace("\n", '')
+                unit_preiceTfInt = TransferDecodeEncode(subData[23])
                 unit_preice = int(getCategory(titleName,unit_preiceTfInt,23))
                 # print unit_preiceTfInt, unit_preice
                 try:
-                    berth_category = float(subData[24].decode('big5').encode('utf8').replace("\r", '').replace("\n", ''))
-                    berth_category_total = int(subData[25].decode('big5').encode('utf8').replace("\r", '').replace("\n", ''))
+                    berth_category = float(TransferDecodeEncode(subData[24]))
+                    berth_category_total = int(TransferDecodeEncode(subData[25]))
                 except:
                     berth_category = None
                     berth_category_total = None
 
-                berth_total_price = subData[26].decode('big5').encode('utf8').replace("\r", '').replace("\n", '')
+                berth_total_price = TransferDecodeEncode(subData[26])
 
 
                 list = (district, transaction,plate,squareMeter , zoning,non_metropolis,non_metropolis_land_use,transaction_year,month_and_day,\
@@ -304,7 +306,7 @@ def main(conn):
     # print year_number
     for year in year_number:
         for s in season:
-            path = '/Users/Neil/Desktop/DataEngineerAssignment20180801/file/10%s_%s.zip' % (year,s)
+            path = '/Users/Neil/Desktop/file/10%s_%s.zip' % (year,s)
             # print path
             try:
                 zf = zipfile.ZipFile(path, 'r')
